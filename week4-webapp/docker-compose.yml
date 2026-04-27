@@ -1,0 +1,47 @@
+version: '3.8'
+
+networks:
+  gitea-net:
+    driver: bridge # This creates the isolated internal network
+
+volumes:
+  postgres_data:
+  gitea_data:
+
+services:
+  # The PostgreSQL Database Container
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      - POSTGRES_USER=gitea
+      - POSTGRES_PASSWORD=gitea_secure_password
+      - POSTGRES_DB=gitea
+    networks:
+      - gitea-net
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # The Gitea Container
+  gitea:
+    image: gitea/gitea:latest
+    restart: always
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__database__DB_TYPE=postgres
+      - GITEA__database__HOST=db:5432
+      - GITEA__database__NAME=gitea
+      - GITEA__database__USER=gitea
+      - GITEA__database__PASSWD=gitea_secure_password
+    networks:
+      - gitea-net
+    volumes:
+      - gitea_data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "3000:3000" # Maps Gitea's web UI to localhost
+      - "222:22"    # Maps Gitea's SSH port to localhost:222
+    depends_on:
+      - db
