@@ -37,7 +37,7 @@ To achieve continuous deployment, I wrote a custom Bash script (`post-receive` h
 If you would like to run this infrastructure locally, ensure you have Docker and Docker Compose installed on your machine.
 
 **1. Clone the repository:**
-`git clone https://github.com/Omarleymo/homeserver-project.git`
+`git clone https://github.com/omarleymo/homeserver-project.git`
 `cd homeserver-project`
 
 **2. Start the infrastructure (Gitea & Postgres):**
