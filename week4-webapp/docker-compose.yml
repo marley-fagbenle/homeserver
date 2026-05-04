@@ -40,6 +40,7 @@ services:
       - gitea_data:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "3000:3000" # Maps Gitea's web UI to localhost
       - "222:22"    # Maps Gitea's SSH port to localhost:222
